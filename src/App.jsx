@@ -7,14 +7,12 @@ function App() {
   const [filterData, setFilterdata ] = useState([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
-  const [loadingImage, setLoadingImage] = useState(true)
-  const img = useRef()
 
   useEffect(() => {
     const API = async () => {
       try {
         setLoading(true)
-        const response  =  await fetch('https://pokeapi.co/api/v2/pokemon/?limit=500')
+        const response  =  await fetch('https://pokeapi.co/api/v2/pokemon/?limit=99')
         const result = await response.json()
 
         const pokemonData = await Promise.all(
@@ -26,8 +24,6 @@ function App() {
         setData(pokemonData)
         setFilterdata(pokemonData)
         setLoading(false)
-        setLoadingImage(false)
-
       } 
       
       catch (error){
@@ -48,61 +44,26 @@ function App() {
     console.log(e.target.value);
   }
 
-  const handleImage = (id) => {
-    
-  }
-  
-
   return (
     <>
-    <Input
-    label="Name Pokemon" 
-    value={search}
-    onChange={handleChange}
-    
-    />
-        {loadingImage ? (
-          <div className='grid place-items-center h-[80vh]'>
-            <Spinner className="h-16 w-16 text-gray-900/50" />
-          </div>
-          )  
-          
-          : (
-            
-            <div className='grid grid-cols-3 gap-5 mt-5'>
-            {filterData.map((pokemon) => (
-              <div  className='border rounded-lg flex justify-center items-center flex-col'  key={pokemon.name}>
-               {
-                loadingImage
-                 ? (
-                  
-                   <Spinner className="h-16 w-16 text-gray-900/50"/>
-                ) 
-                : (
-                  <>
-                  
-                  <p>{pokemon.name}</p>
-                    <img
-                  loading='eager'
-                  ref={img} 
-                  src={pokemon.sprites.other["official-artwork"].front_default} 
-                  alt={pokemon.name} 
-                  className="w-full h-full"
-                
-                  />
-                  </>
-                    )
-                    
-                  }
-                </div>
-            ))}
-            </div>
-           
-        )
+      <Input label="Nom du Pokémon" value={search} onChange={handleChange} />
 
-      }
+      {loading ? (
+        <div className='grid place-items-center h-[80vh]'>
+          <Spinner className="h-16 w-16 text-gray-900/50" />
+        </div>
+      ) : (
+        <div className='grid grid-cols-3 gap-5 mt-5'>
+          {filterData.map((pokemon) => (
+            <div className='border rounded-lg flex justify-center items-center flex-col' key={pokemon.name}>
+              <p>{pokemon.name}</p>
+              <img loading="lazy" src={pokemon.sprites.other["official-artwork"].front_default} alt={pokemon.name} className="w-full h-full" />
+            </div>
+          ))}
+        </div>
+      )}
     </>
-  )
+  );
 
 }
 
