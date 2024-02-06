@@ -11,7 +11,6 @@ function App() {
   useEffect(() => {
     const API = async () => {
       try {
-        setLoading(true)
         const response  =  await fetch('https://pokeapi.co/api/v2/pokemon/?limit=99')
         const result = await response.json()
 
@@ -31,7 +30,6 @@ function App() {
       }
     }
     
-    API()
   }, [])
   
   useEffect (() => {
