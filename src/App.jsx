@@ -29,7 +29,7 @@ function App() {
         console.log(console.error("erreur lors de la récupération d'api ", error));
       }
     }
-    
+    API()
   }, [])
   
   useEffect (() => {
